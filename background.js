@@ -4,18 +4,18 @@ var gotaTabs = [];     // array of tab ids with url gota.io
 var gotaWindows = [];  // array of window ids url gota.io
 var index = null;       // index may be 0 or 1
 
-browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.action === "switchTabs") {
         updateTabs().then(() => {
             console.log("Switching tabs!");
             switch (gotaTabs.length) {
                 case 2: // switch tabs
                     console.log(`Switching to index ${index}`);
-                    browser.tabs.update(gotaTabs[index ? 0 : 1], { active: true });
+                    chrome.tabs.update(gotaTabs[index ? 0 : 1], { active: true });
                     break;
                 case 1: // make a new tab
-                    browser.tabs.get(gotaTabs[0], function(tab) {
-                        browser.tabs.create({ url: tab.url });
+                    chrome.tabs.get(gotaTabs[0], function(tab) {
+                        chrome.tabs.create({ url: tab.url });
                     });
                     break;
                 case 0:
@@ -30,10 +30,10 @@ browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             console.log("Switching windows!");
             switch (gotaWindows.length) {
                 case 2: // switch windows
-                    browser.windows.update(gotaWindows[index ? 0 : 1], {focused: true });
+                    chrome.windows.update(gotaWindows[index ? 0 : 1], {focused: true });
                     break;
                 case 1: // open a new window
-                    browser.windows.get(gotaWindows[0], { populate: true }, (window) => openWindow(window));
+                    chrome.windows.get(gotaWindows[0], { populate: true }, (window) => openWindow(window));
                     break;
                 case 0:
                     console.warn("Warning: No active gota window found.")
@@ -53,7 +53,7 @@ function openWindow(window) {
     const gotaTab = window.tabs.find(tab => tab.url.includes('gota.io'));
     if (gotaTab) {
         // Create a new window with the gota.io tab URL
-        browser.windows.create({ url: gotaTab.url });
+        chrome.windows.create({ url: gotaTab.url });
     } else {
         console.warn("Warning: No gota.io tab found in the existing window.");
     }
@@ -61,7 +61,7 @@ function openWindow(window) {
 
 // update global variables index and window[]
 function updateWindows() {
-    return browser.windows.getAll({ populate: true })
+    return chrome.windows.getAll({ populate: true })
     .then((windows) => {
         // Filter for windows that have a gota.io tab and store their IDs
         gotaWindows = windows.filter(win => 
@@ -87,7 +87,7 @@ function updateWindows() {
 
 // update global variables gotaTabs[] and index
 function updateTabs() {
-    return browser.tabs.query({ currentWindow: true, url: "https://gota.io/*" })
+    return chrome.tabs.query({ currentWindow: true, url: "https://gota.io/*" })
     .then((tabs) => {
         gotaTabs = tabs.map(tab => tab.id);
         console.log(`Germs.io tabs found: ${gotaTabs.length}`);

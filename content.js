@@ -93,7 +93,7 @@ var chatObserver = new MutationObserver(function (mutations) {
 
 chatObserver.observe(chatBox, { childList: true });
 
-gotafoxIcon.src = browser.runtime.getURL("images/gsDuhFox-19.png");
+gotafoxIcon.src = chrome.runtime.getURL("images/gsDuhFox-19.png");
 
 
 document.addEventListener("keydown", keydown);
@@ -110,7 +110,7 @@ function openSettingsMenu() {
     return;
   }
   stopWaiting(); // just to update the style
-  browser.storage.local.get(
+  chrome.storage.local.get(
     ["switcherEnabled", "switcherWindowed", "ignoreInvites"],
     function (items) {
       enabledCheckbox.checked = items.switcherEnabled;
@@ -143,7 +143,7 @@ function checkboxChanged() {
   const switcherEnabled = document.getElementById("enabledCheckbox").checked;
   const switcherWindowed = document.getElementById("windowedCheckbox").checked;
 
-  browser.storage.local.set(
+  chrome.storage.local.set(
     {
       switcherEnabled: switcherEnabled,
       switcherWindowed: switcherWindowed,
@@ -166,7 +166,7 @@ function stoppedUsingTextBox() {
   usingTextBox = false;
 }
 
-browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === "updateSettings") {
     console.info("Updating settings");
     updateAllSettings();
@@ -185,7 +185,7 @@ function keydown(event) {
     switcherKey[0] = event.keyCode;
     switcherKey[1] = event.key;
 
-    browser.storage.local.set({ switcherKey: switcherKey }, function () {
+    chrome.storage.local.set({ switcherKey: switcherKey }, function () {
       console.log("Switcher key changes saved");
       updateAllSettings();
     });
@@ -197,10 +197,10 @@ function keydown(event) {
   ) {
     if (switcherWindowed) {
       console.log("Switching windows!");
-      browser.runtime.sendMessage({ action: "switchWindows" });
+      chrome.runtime.sendMessage({ action: "switchWindows" });
     } else {
       console.log("Switching tabs!");
-      browser.runtime.sendMessage({ action: "switchTabs" });
+      chrome.runtime.sendMessage({ action: "switchTabs" });
     }
   }
 }
@@ -218,15 +218,15 @@ function updateAllSettings() {
   }
 
   // gotafox settings
-  browser.storage.local.get(
+  chrome.storage.local.get(
     [
       "switcherKey",
       "switcherEnabled",
       "switcherWindowed",
     ],
     function (settings) {
-      if (browser.runtime.lastError) {
-        console.error("Error retrieving settings:", browser.runtime.lastError);
+      if (chrome.runtime.lastError) {
+        console.error("Error retrieving settings:", chrome.runtime.lastError);
         return;
       }
       console.info("Gotafox settings retrieved.");
