@@ -1,4 +1,5 @@
 console.log("Running content.js");
+console.log("Icon path:", chrome.runtime.getURL("images/gsDuhFox-19.png"));
 
 updateAllSettings();
 
@@ -20,7 +21,6 @@ bottomRightStats.style.height = "76%";
 
 const settingsButtonHTML = `
 <button id="gotafoxButton" class="bottom-btn gotafox-btn">
-    <img id="gotafoxIcon" alt="Icon" style="vertical-align: middle;"></img>
     <b>Gotafox</b>
 </button>`;
 
@@ -78,7 +78,6 @@ var settingsPanel = document.getElementById("gotafoxSettingsPanel");
 var keyTester = document.getElementById("keyTester");
 var enabledCheckbox = document.getElementById("enabledCheckbox");
 var windowedCheckbox = document.getElementById("windowedCheckbox");
-var gotafoxIcon = document.getElementById("gotafoxIcon");
 
 var chatObserver = new MutationObserver(function (mutations) {
   mutations.forEach(function (mutation) {
@@ -92,9 +91,6 @@ var chatObserver = new MutationObserver(function (mutations) {
 });
 
 chatObserver.observe(chatBox, { childList: true });
-
-gotafoxIcon.src = chrome.runtime.getURL("images/gsDuhFox-19.png");
-
 
 document.addEventListener("keydown", keydown);
 chatInput.addEventListener("focus", startedUsingTextBox);
