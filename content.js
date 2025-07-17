@@ -1,4 +1,5 @@
 console.log("Running content.js");
+console.log("Icon path:", chrome.runtime.getURL("images/gsDuhFox-19.png"));
 
 updateAllSettings();
 
@@ -19,18 +20,17 @@ bottomRightStats.style.height = "76%";
 
 
 const settingsButtonHTML = `
-<button id="gotafoxButton" class="bottom-btn gotafox-btn">
-    <img id="gotafoxIcon" alt="Icon" style="vertical-align: middle;"></img>
+<button id="gotafoxButton" class="gotafox-btn">
     <b>Gotafox</b>
 </button>`;
 
 const settingsPanelHTML = `
-<div id="gotafoxSettingsPanel" class="main-right-panel gotafox-panel">
+<div id="gotafoxSettingsPanel" class="gotafox-panel">
     <div class="gotafox-panel-content">
-        <div class="title-text menu-title">
+        <div class="gotafox-menu-title">
 	    <b>Gotafox</b>
 	</div>
-	    <div class="options-container gotafox-options-container">
+	    <div class="gotafox-options-container">
 	        <table class="options-table">
 		    <thead>
 			<tr>
@@ -75,10 +75,10 @@ mainRight.insertAdjacentHTML("afterBegin", settingsPanelHTML);
 
 var gotafoxButton = document.getElementById("gotafoxButton");
 var settingsPanel = document.getElementById("gotafoxSettingsPanel");
+var settingsPanelContent = document.getElementsByClassName("gotafox-panel-content")[0];
 var keyTester = document.getElementById("keyTester");
 var enabledCheckbox = document.getElementById("enabledCheckbox");
 var windowedCheckbox = document.getElementById("windowedCheckbox");
-var gotafoxIcon = document.getElementById("gotafoxIcon");
 
 var chatObserver = new MutationObserver(function (mutations) {
   mutations.forEach(function (mutation) {
@@ -92,9 +92,6 @@ var chatObserver = new MutationObserver(function (mutations) {
 });
 
 chatObserver.observe(chatBox, { childList: true });
-
-gotafoxIcon.src = browser.runtime.getURL("images/gsDuhFox-19.png");
-
 
 document.addEventListener("keydown", keydown);
 chatInput.addEventListener("focus", startedUsingTextBox);
@@ -110,22 +107,22 @@ function openSettingsMenu() {
     return;
   }
   stopWaiting(); // just to update the style
-  browser.storage.local.get(
+  chrome.storage.local.get(
     ["switcherEnabled", "switcherWindowed", "ignoreInvites"],
     function (items) {
       enabledCheckbox.checked = items.switcherEnabled;
       windowedCheckbox.checked = items.switcherWindowed;
     }
   );
-  settingsPanel.classList.add('fly-in');
+  settingsPanelContent.classList.add('fly-in');
   settingsPanel.style.display = "block";
   settingsPanel.style.position = "absolute";
   settingsPanel.addEventListener('animationend', function() {
-    const panels = Array.from(mainRight.children).slice(1); // not the germsfox child
+    const panels = Array.from(mainRight.children).slice(1); // not the germsfox panel
     for (const panel of panels) {
       panel.style.display = "none";
     }
-    settingsPanel.classList.remove('fly-in');
+    settingsPanelContent.classList.remove('fly-in');
     settingsPanel.style.position = "relative";
   });
 }
@@ -143,7 +140,7 @@ function checkboxChanged() {
   const switcherEnabled = document.getElementById("enabledCheckbox").checked;
   const switcherWindowed = document.getElementById("windowedCheckbox").checked;
 
-  browser.storage.local.set(
+  chrome.storage.local.set(
     {
       switcherEnabled: switcherEnabled,
       switcherWindowed: switcherWindowed,
@@ -166,7 +163,7 @@ function stoppedUsingTextBox() {
   usingTextBox = false;
 }
 
-browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === "updateSettings") {
     console.info("Updating settings");
     updateAllSettings();
@@ -185,7 +182,7 @@ function keydown(event) {
     switcherKey[0] = event.keyCode;
     switcherKey[1] = event.key;
 
-    browser.storage.local.set({ switcherKey: switcherKey }, function () {
+    chrome.storage.local.set({ switcherKey: switcherKey }, function () {
       console.log("Switcher key changes saved");
       updateAllSettings();
     });
@@ -197,10 +194,10 @@ function keydown(event) {
   ) {
     if (switcherWindowed) {
       console.log("Switching windows!");
-      browser.runtime.sendMessage({ action: "switchWindows" });
+      chrome.runtime.sendMessage({ action: "switchWindows" });
     } else {
       console.log("Switching tabs!");
-      browser.runtime.sendMessage({ action: "switchTabs" });
+      chrome.runtime.sendMessage({ action: "switchTabs" });
     }
   }
 }
@@ -218,15 +215,15 @@ function updateAllSettings() {
   }
 
   // gotafox settings
-  browser.storage.local.get(
+  chrome.storage.local.get(
     [
       "switcherKey",
       "switcherEnabled",
       "switcherWindowed",
     ],
     function (settings) {
-      if (browser.runtime.lastError) {
-        console.error("Error retrieving settings:", browser.runtime.lastError);
+      if (chrome.runtime.lastError) {
+        console.error("Error retrieving settings:", chrome.runtime.lastError);
         return;
       }
       console.info("Gotafox settings retrieved.");
