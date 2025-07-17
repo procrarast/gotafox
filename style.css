@@ -1,0 +1,59 @@
+
+hr {
+	border-width: 2px;
+	background-color: #947995; 
+}
+.gotafox-btn {
+	font-family: 'open sans';	
+	color: #e4c6e6; 
+	background-color: #382938; 
+	border: 2px solid #947995; 
+	user-select: none;
+	border-radius: 3px 15px 15px 3px !important;
+	float: left;
+}
+.gotafox-btn:hover {
+	background-color: #241b24;
+}
+.key-tester {
+	background-color: #1e1a1e;
+	font-family: 'open sans';	
+	color: #e4c6e6; 
+	border: 2px solid #947995; 
+	border-radius: 4px; 
+	cursor: pointer;
+	text-align: center; 
+	width: 60px; 
+	height: 20px; 
+	user-select: none;
+}
+.key-tester:hover {
+	background-color: #241b24;
+}
+.gotafox-panel {
+	width: 323.66px;
+	color: #e4c6e6; 
+	display: none;
+	background-color: #382938;
+}
+.gotafox-panel-content {
+	font-family: 'open sans';	
+	color: #e4c6e6;
+	border: 1px solid #947995;
+	border-radius: 10px;
+}
+.gotafox-options-container {
+	background-color: #382938;
+}
+
+@keyframes flyIn {
+	from {
+		transform: translateX(340px);
+	}
+	to {
+		transform: translateX(0px);
+	}
+}
+.fly-in {
+	animation: flyIn 0.5s ease-out forwards;
+}
