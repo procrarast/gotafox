@@ -20,17 +20,17 @@ bottomRightStats.style.height = "76%";
 
 
 const settingsButtonHTML = `
-<button id="gotafoxButton" class="bottom-btn gotafox-btn">
+<button id="gotafoxButton" class="gotafox-btn">
     <b>Gotafox</b>
 </button>`;
 
 const settingsPanelHTML = `
-<div id="gotafoxSettingsPanel" class="main-right-panel gotafox-panel">
+<div id="gotafoxSettingsPanel" class="gotafox-panel">
     <div class="gotafox-panel-content">
-        <div class="title-text menu-title">
+        <div class="gotafox-menu-title">
 	    <b>Gotafox</b>
 	</div>
-	    <div class="options-container gotafox-options-container">
+	    <div class="gotafox-options-container">
 	        <table class="options-table">
 		    <thead>
 			<tr>
@@ -75,6 +75,7 @@ mainRight.insertAdjacentHTML("afterBegin", settingsPanelHTML);
 
 var gotafoxButton = document.getElementById("gotafoxButton");
 var settingsPanel = document.getElementById("gotafoxSettingsPanel");
+var settingsPanelContent = document.getElementsByClassName("gotafox-panel-content")[0];
 var keyTester = document.getElementById("keyTester");
 var enabledCheckbox = document.getElementById("enabledCheckbox");
 var windowedCheckbox = document.getElementById("windowedCheckbox");
@@ -113,15 +114,15 @@ function openSettingsMenu() {
       windowedCheckbox.checked = items.switcherWindowed;
     }
   );
-  settingsPanel.classList.add('fly-in');
+  settingsPanelContent.classList.add('fly-in');
   settingsPanel.style.display = "block";
   settingsPanel.style.position = "absolute";
   settingsPanel.addEventListener('animationend', function() {
-    const panels = Array.from(mainRight.children).slice(1); // not the germsfox child
+    const panels = Array.from(mainRight.children).slice(1); // not the germsfox panel
     for (const panel of panels) {
       panel.style.display = "none";
     }
-    settingsPanel.classList.remove('fly-in');
+    settingsPanelContent.classList.remove('fly-in');
     settingsPanel.style.position = "relative";
   });
 }

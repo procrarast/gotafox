@@ -4,6 +4,9 @@ hr {
 	background-color: #947995; 
 }
 .gotafox-btn {
+	height: 17%;
+	width: 140px;
+	margin-bottom: 5px;
 	font-family: 'open sans';	
 	color: #e4c6e6; 
 	background-color: #382938; 
@@ -31,29 +34,54 @@ hr {
 	background-color: #241b24;
 }
 .gotafox-panel {
-	width: 323.66px;
 	color: #e4c6e6; 
 	display: none;
-	background-color: #382938;
+	overflow: hidden;
+	position: relative;
 }
 .gotafox-panel-content {
+	width: 321.66px;
 	font-family: 'open sans';	
 	color: #e4c6e6;
-	border: 1px solid #947995;
 	border-radius: 10px;
+	background-color: #382938;
+	border: 1px solid #947995;
 }
 .gotafox-options-container {
-	background-color: #382938;
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 0;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	height: 420px;
+	font-size: 14px;
+	padding: 0 10px 10px;
+	box-sizing: border-box;
+	border-radius: 10px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.gotafox-menu-title {
+	height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px 10px 0 0;
+	font-size: 16pt;
+	text-align: center;
+	font-family: "Open Sans";
+	background-color: #1e1a1e;
 }
 
 @keyframes flyIn {
 	from {
-		transform: translateX(340px);
+		transform: translateX(323.66px);
 	}
 	to {
 		transform: translateX(0px);
 	}
 }
 .fly-in {
-	animation: flyIn 0.5s ease-out forwards;
+	animation: flyIn 0.5s ease-in-out forwards;
 }
