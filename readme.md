@@ -1,4 +1,4 @@
-# Germsfox 
+# Gotafox 
 ## Description
 Gotafox is a multiboxing extension for https://gota.io/.
 ## Features
